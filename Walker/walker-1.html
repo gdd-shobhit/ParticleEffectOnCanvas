@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>Walker-1</title>
+	<style>
+	canvas{
+		border:1px solid gray;
+	}
+	</style>
+	<script>
+	
+	let walker1 = {
+		x:320,
+		y:240,
+		color: getRandomColor(),
+		width: 5,
+		move(){
+			// adding weight to 0.8 so that it moves in horizontal more
+			if(flipWeightedCoin(0.9)){
+				this.x += flipWeightedCoin() ? -this.width : this.width;
+			}else{
+				this.y += flipWeightedCoin() ? -this.width : this.width;
+			}
+		}
+	};
+
+	let walker2 = {
+		x:320,
+		y:240,
+		color: getRandomColor(),
+		width: 5,
+		move(){
+			if(flipWeightedCoin(0.9)){
+				this.x += flipWeightedCoin() ? -this.width : this.width;
+			}else{
+				this.y += flipWeightedCoin() ? -this.width : this.width;
+			}
+		}
+	};
+
+	let walker3 = {
+		x:320,
+		y:240,
+		color: getRandomColor(),
+		width: 5,
+		move(){
+			if(flipWeightedCoin(0.9)){
+				this.x += flipWeightedCoin() ? -this.width : this.width;
+			}else{
+				this.y += flipWeightedCoin() ? -this.width : this.width;
+			}
+		}
+	};
+	
+	
+		// #0 - in this class we will always use ECMAScript 5's "strict" mode
+		// See what 'use strict' does here:
+		// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions_and_function_scope/Strict_mode
+		'use strict';
+		let ctx;
+		let gAlpha=1.0;
+		// #1 call the init function after the pages loads
+		window.onload = function(){
+			console.log("page loaded!");
+			// #2 Now that the page has loaded, start drawing!
+			
+			// A - canvas variable points at <canvas> tag
+			let canvas = document.querySelector('canvas');
+			
+			// B - the ctx variable points at a "2D drawing context"
+			ctx = canvas.getContext('2d');
+			
+			// C - all fill operations are now in red
+			ctx.fillStyle = 'black'; 
+			
+			// D - fill a rectangle with the current fill color
+			ctx.fillRect(20,20,600,440); 
+			//setInterval(drawWalker,1000/12);
+			//setInterval(drawWalker(walker2),1000/12);
+			//setInterval(drawWalker(walker3),1000/12);
+			//setInterval(cls,5000);
+			loop();
+		}
+
+		function loop(){
+			requestAnimationFrame(loop);
+			drawWalker(walker1);
+			drawWalker(walker2);
+			drawWalker(walker3);
+			// just for fun
+			ctx.globalAlpha = gAlpha;
+			gAlpha-=0.01;
+			if(gAlpha<0.1)
+			gAlpha=1.0;
+
+		}
+		
+		
+		function drawWalker(incomingWalker){
+			ctx.fillStyle = incomingWalker.color;		
+			ctx.fillRect(incomingWalker.x-incomingWalker.width/2,incomingWalker.y-incomingWalker.width/2,incomingWalker.width/2,incomingWalker.width/2);
+			incomingWalker.move();
+		}
+		
+		// UTILS
+		function getRandomColor(){
+			function getByte(){
+				return 55 + Math.round(Math.random() * 200);
+			}
+			return "rgba(" + getByte() + "," + getByte() + "," + getByte() + ",.8)";
+		}
+		
+		function cls(){
+			ctx.clearRect(0,0,640,480);
+		}
+		
+		function flipWeightedCoin(weight = 0.5){
+			return Math.random() < weight;
+		}
+		function getRandomColor(){
+      function getByte(){
+        return 55 + Math.round(Math.random() * 200);
+      }
+      return "rgba(" + getByte() + "," + getByte() + "," + getByte() + ",.8)";
+    }
+    
+    function getRandomInt(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+	</script>
+</head>
+<body>
+	<canvas width="640" height="480">
+		Get a real browser!
+	</canvas>
+</body>
+</html>
