@@ -6,8 +6,10 @@ import * as classes from "./classes.js";
         const canvasWidth = 1280, canvasHeight = 720;
         let target;
         var mousePos;
-        let speed;
-        let elapsed=true;
+        let speed=2000;
+        let targetCount = 30;
+        let timer= 0;
+        let active = true;
 		// #1 call the init function after the pages loads
 		function init(){	
 			canvas = document.querySelector('canvas');	
@@ -15,7 +17,8 @@ import * as classes from "./classes.js";
             canvas.width = canvasWidth;
             canvas.height = canvasHeight;
 			ctx = canvas.getContext('2d');
-            setupUI()
+            setupUI();
+
             canvas.addEventListener('mousemove', function(evt) {
                 mousePos = utils.getMousePos(canvas, evt);
                 //console.log(mousePos);
@@ -23,7 +26,9 @@ import * as classes from "./classes.js";
 			ctx.fillStyle = 'black'; 
             ctx.fillRect(0,0,canvasWidth, canvasHeight); 
             target= new classes.Target();
+           // start();
             loop();
+
 		};
 
         function setupUI(){
@@ -38,36 +43,31 @@ import * as classes from "./classes.js";
             }
         }
         
-        function sleep(ms) {
-            return new Promise(resolve => setTimeout(resolve, ms));
-          }
-          
-        async function randomPoping() {
-            drawWalker(target);
-            await sleep(speed);
-            target.die(ctx);
-            await sleep(speed);
-        }
+function loop(){
+    active=false;
+    drawTarget(target);
+    setTimeout(function(){
+        active = true;
+        target.die(ctx);
+        requestAnimationFrame(loop)
+    },speed);
+
+    // if(active)
+    // requestAnimationFrame(loop);
+}
+
 
         function MakeCrosshair(){
             console.log(utils.getMousePos(canvas,target));
         }
 
-        function loop(){
- 
-            randomPoping();
-            if(elapsed){
-                elapsed=true;
-                requestAnimationFrame(loop);
-            }
-        
-		}
 
-        function drawWalker(incomingWalker){
+        function drawTarget(incomingWalker){
             target.move();
+            ctx.save();
 			ctx.fillStyle = incomingWalker.color;		
 			ctx.fillRect(incomingWalker.x-incomingWalker.width/2,incomingWalker.y-incomingWalker.width/2,incomingWalker.width/2,incomingWalker.width/2);
-            
+            ctx.restore();
         }
 		
 

@@ -9,9 +9,11 @@ class Target{
     }
 
     die(ctx){
+
         ctx.fillStyle= "black";
         ctx.fillRect(0,0,1280, 720); 
         ctx.fillStyle = this.color;
+      
     }
     move(){
         let x = utils.getRandomInt(20,1260);
