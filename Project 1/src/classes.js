@@ -22,6 +22,28 @@ class Target{
         this.x = x;
         this.y = y;
     }
+
+    collision(mousePos,ctx){
+        if(utils.getDistance(this.x,mousePos.x,this.y,mousePos.y) < 5){
+            this.die(ctx);
+            console.log("hit");
+        }
+    }
 }
 
-export {Target};
+class CrossHair{
+    constructor(x=0,y=0,centerOffset=2,lineWidth=2,color='red'){
+        this.x=x;
+        this.y=y;
+        this.centerOffset=centerOffset;
+        this.lineWidth=lineWidth;
+        this.color=color;
+    }
+
+    move(mousePosX,mousePosY){        
+        this.x=mousePosX;
+        this.y=mousePosY;
+    }
+}
+
+export {Target,CrossHair};

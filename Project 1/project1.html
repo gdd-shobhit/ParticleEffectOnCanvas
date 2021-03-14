@@ -12,15 +12,27 @@
     <script type="module" src="src/loader.js"></script>
 </head>
 <body>
-	<canvas></canvas>
-    <div>
+	<div>
+        <canvas id="layer1"  
+          style="position: absolute; left: 0; top: 0; z-index: 0;"></canvas>
+        <canvas id="layer2"  
+          style="position: absolute; left: 0; top: 0; z-index: 1;"></canvas>
+       </div>
+    <div style="position: absolute; top: 730px">
         <b>Choose Your Difficulty</b>
     </div>
-    <div>
+
+    <div style="position: absolute; top: 750px">
         <input type="radio" id="easy" name="speed" value="4"> <label for="easyRadio">Easy</label>
         <input type="radio" id="normal" name="speed" value="2"> <label for="normalRadio">Normal</label>
         <input type="radio" id="hard" name="speed" value="1" checked> <label for="hardRadio">Hard</label>
         <input type="radio" id="impossible" name="speed" value="0.2"> <label for="impossible">Impossible</label>
       </div>
+     <div style="position: absolute; top: 750px">
+    <button style="position: absolute; top: 40px" id="resetButton">
+      Reset
+    </button>
+    </div>
+
 </body>
 </html>
