@@ -1,7 +1,7 @@
 import * as utils from "./utils.js";
 
 class Target{
-    constructor(x=1280/2,y=720/2,width = 25,color = utils.getRandomColor()){
+    constructor(x=1280/2,y=720/2,width = 25,color = "red"){
         this.x = x;
         this.y = y;
         this.width = width;
@@ -16,8 +16,8 @@ class Target{
       
     }
     move(){
-        let x = utils.getRandomInt(20,1260);
-        let y = utils.getRandomInt(20,700);
+        let x = utils.getRandomInt(50,1230);
+        let y = utils.getRandomInt(50,670);
 
         this.x = x;
         this.y = y;

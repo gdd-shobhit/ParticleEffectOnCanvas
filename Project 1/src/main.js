@@ -10,7 +10,7 @@ import * as classes from "./classes.js";
         let currentCount = 0;
         let fps,fpsInterval, startTime, now, then ,elapsed;
         let spawnTimer=0;
-        let gameStateChanged = false;
+        let img;
 
     const GameState = Object.freeze({
         START:   		Symbol("START"),
@@ -19,6 +19,7 @@ import * as classes from "./classes.js";
     });
 
         let gameState = GameState.START;
+        let shootSound;
 
 		// #1 call the init function after the pages loads
 		function init(){	
@@ -28,6 +29,8 @@ import * as classes from "./classes.js";
             canvas.height = canvasHeight;
             canvasTop.width = canvasWidth;
             canvasTop.height = canvasHeight;
+            img = document.querySelector("img");
+            shootSound = new sound("./sound/Sheriff.wav")
 			ctx = canvas.getContext('2d');
             ctxTop = canvasTop.getContext('2d');
             target= new classes.Target();
@@ -41,25 +44,33 @@ import * as classes from "./classes.js";
 			ctx.fillStyle = 'black'; 
             ctx.fillRect(0,0,canvasWidth, canvasHeight); 
 
-            drawHUD();                
-           
-
-		};
-
+            drawHUD();                        
+        };
+        
         function setupUI(){
             // #6 - note the attribute selector we are using here
             let radioButtons = document.querySelectorAll("input[type=radio][name=speed]");
-            let resetButton = document.getElementById("resetButton");
+            let fpsRadioButtons = document.querySelectorAll("input[type=radio][name=fps]");
+            let resetButton = document.querySelector("button");
             for (let r of radioButtons){
                 r.onchange = function(e){
                     // #7 - form values are returned as Strings, so we have to convert them to a Number
                         speed = Number(e.target.value);                      
                 }
             }
-            resetButton.onmousedown = function(e){
+
+            for(let fps of fpsRadioButtons){
+                fps.onchange = function(e){
+                    fps= Number(e.target.value);
+                    fpsInterval= 1000/fps;
+                }
+            }
+
+            resetButton.onclick = function(e){
                 currentCount=0;
                 targetCount= 30;
                 gameState = GameState.START;
+                drawHUD();
             }
         }
 
@@ -73,10 +84,11 @@ import * as classes from "./classes.js";
                 ctxTop.fillRect(0,0,1280,720);
                 ctxTop.font = "30px sans-serif";
                 ctxTop.fillStyle = utils.getRandomColor();
-                ctxTop.fillText("Welcome to GameLab",500,canvasTop.height/2-20);
-                ctxTop.fillText("Shoot Targets popping up",500 - 20,canvasTop.height/2+30);
+                ctxTop.drawImage(img,500,canvasHeight/2 -60);
+                ctxTop.fillStyle = "lightblue";
+                ctxTop.fillText("Instructions: Shoot Targets",480,680);
                 ctxTop.fillStyle = utils.getRandomColor();
-                ctxTop.fillText("Click to start the game.... ",500,canvasTop.height/2 + 100);
+                ctxTop.fillText("Press any key to start the game.... ",440,canvasTop.height/2 + 100);
                 targetCount=30;
                 currentCount = 0;
                 window.onkeypress = function(e){
@@ -121,9 +133,18 @@ function loop(){
     if(elapsed>fpsInterval){
         then = now - (elapsed%fpsInterval);
         canvasTop.onmousedown = getMouseDown;
+        console.log("target: " + target.x);
+        console.log("MouseX: " + mousePos.x);
         
+        if(utils.getDistance(mousePos.x,mousePos.y,target.x,target.y) <= target.width/2){
+            drawTarget(target);
+            drawInGameText();
+            currentCount++;
+            targetCount--;
+            startTime=now;
+            spawnTimer=0;
+        }
 
-    //target.collision(mousePos,ctx);
         if(targetCount < 0){
             gameState = GameState.GAMEOVER;
         }
@@ -150,6 +171,8 @@ function loop(){
 
 
 
+
+// Helper Functions
 function drawInGameText(){
 
     ctxTop.save();
@@ -167,8 +190,10 @@ function drawGameOverText(){
     ctxTop.clearRect(0,0,1280,720);
     ctxTop.fillStyle= target.color;
     ctxTop.font = "30px sans-serif";
-    ctxTop.fillText("Game Over", 500, 300);
-    ctxTop.fillText("Press any key to go to the main screen",200,500);
+    ctxTop.fillText("Your score was: "+ currentCount, 500, 300);
+    let accuracy = (currentCount/30)*100;
+    ctxTop.fillText("Your accuracy was: " + accuracy +"%", 470, 400);
+    ctxTop.fillText("Press any key to practice again",400,500);
     ctxTop.restore();
 }
 
@@ -181,9 +206,24 @@ function drawGameOverText(){
 			ctx.fillRect(incomingTarget.x-incomingTarget.width/2,incomingTarget.y-incomingTarget.width/2,incomingTarget.width/2,incomingTarget.width/2);         
             ctx.restore();
         }
-		
+	
         function getMouseDown(e){
              mousePos = utils.getMouse(e);
+             shootSound.play();
+            // console.log(mousePos);
         }
 
-        export {init};
+        function sound(src) {
+            this.sound = new Audio(src);
+            this.sound.style.display = "none";
+            document.body.appendChild(this.sound);
+            this.play = function(){
+              this.sound.play();
+            }
+            this.stop = function(){
+              this.sound.pause();
+              this.sound.currentTime = 0;
+            }
+          }
+
+export {init};

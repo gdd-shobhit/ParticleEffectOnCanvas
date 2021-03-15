@@ -25,7 +25,10 @@ function getMouse(e){
 
 
 function getDistance(x1,y1,x2,y2){
-    return Math.pow((Math.pow((x2-x1),2)+(Math.pow((y2-y1),2)),1/2));
+	let diffX = x2-x1;
+	let diffy = y2-y1;
+	console.log(diffX);
+    return Math.sqrt(diffX*diffX + diffy*diffy);
 }
 
 export {getRandomColor,getRandomInt,flipWeightedCoin,getMouse,getDistance};
