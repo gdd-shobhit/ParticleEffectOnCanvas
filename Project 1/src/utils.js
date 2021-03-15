@@ -27,7 +27,6 @@ function getMouse(e){
 function getDistance(x1,y1,x2,y2){
 	let diffX = x2-x1;
 	let diffy = y2-y1;
-	console.log(diffX);
     return Math.sqrt(diffX*diffX + diffy*diffy);
 }
 
