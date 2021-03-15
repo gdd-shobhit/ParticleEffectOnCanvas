@@ -1,0 +1,18 @@
+Documentation for project 1 - Aim Lab
+
+I used the RandomWalker randomness concept to come up with the idea of Aim lab. When i play competitve fps games, i find that if there was 
+a browser based aim practice arena, it would be so cool to just practice and it would help me in the game. It used Javascript and canvas feature of HTML.
+
+Minimal CSS is used. It is not mobile friendly yet.
+
+So this aim lab is the solution for that-
+
+It incorporates the difficulty you wanna play target practice. You can change your fps depending on your monitor(if it supports more than 60fps, choose 120fps)
+Easy is 4 seconds, Normal is 2, Hard is 1 and impossible is 0.2 seconds which is just for fun. You can also select the sound of the gun you want to shoot.
+Its between 4 pistols found in valorant: Sheriff, classic, shorty and Ghost.
+
+There is also a reset button in case someone rages and wants to start over.
+
+
+
+Citations and resources used: W3schools , cooltextmaker for logos and stackoverflow
